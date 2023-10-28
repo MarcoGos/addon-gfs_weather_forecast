@@ -316,7 +316,7 @@ class GfsForecast():
                 continue
             day_data = self._data[offset]
             dt = pass_datetime + timedelta(hours = int(offset))
-            key = dt.strftime('%Y-%m-%dT00:00:00%z')
+            key = dt.isoformat()
             if key not in forecast:
                 forecast[key] = {
                     'chance_of_rain': 10,
