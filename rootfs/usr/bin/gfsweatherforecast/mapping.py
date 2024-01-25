@@ -9,11 +9,11 @@ MAPPING: dict[str, dict[str, Any]] = {
         'code': 'VGRD',
         'layer': '10 m above ground'
     },
-    # 'gust': {
-    #     'code': 'GUST', 
-    #     'layer': 'surface',
-    #     'detailed': True
-    # },
+    'gust': {
+        'code': 'GUST', 
+        'layer': 'surface',
+        'detailed': True
+    },
     'tmin': {
         'code': 'TMIN', 
         'layer': '2 m above ground',
@@ -51,12 +51,12 @@ MAPPING: dict[str, dict[str, Any]] = {
         'layer': 'high cloud layer',
         'unit_of_measure': '%'
     },
-    # 'cldmid': {
-    #     'code': 'MCDC', 
-    #     'layer': 'middle cloud layer',
-    #     'detailed': True,
-    #     'unit_of_measure': '%'
-    # },
+    'cldmid': {
+        'code': 'MCDC', 
+        'layer': 'middle cloud layer',
+        'detailed': True,
+        'unit_of_measure': '%'
+    },
     'cldlow': {
         'code': 'LCDC', 
         'layer': 'low cloud layer',
@@ -78,26 +78,26 @@ MAPPING: dict[str, dict[str, Any]] = {
     #     'detailed': True,
     #     'unit_of_measure': '%'
     # },
-    # 'cape': {
-    #     'code': 'CAPE', 
-    #     'layer': 'surface',
-    #     'detailed': True
-    # },
-    # 'liftedindex': {
-    #     'code': '4LFTX',
-    #     'layer': 'surface',
-    #     'detailed': True
-    # },
-    # 'pres': {
-    #     'code': 'PRES', 
-    #     'layer': 'surface',
-    #     'detailed': True,
-    #     'unit_of_measure': 'hPa'
-    # },        
-    # 'vis': {
-    #     'code': 'VIS', 
-    #     'layer': 'surface',
-    #     'detailed': True,
-    #     'unit_of_measure': 'm'
-    # }
+    'cape': {
+        'code': 'CAPE', 
+        'layer': 'surface',
+        'detailed': True
+    },
+    'liftedindex': {
+        'code': '4LFTX',
+        'layer': 'surface',
+        'detailed': True
+    },
+    'pres': {
+        'code': 'PRES', 
+        'layer': 'surface',
+        'detailed': True,
+        'unit_of_measure': 'hPa'
+    },
+    'vis': {
+        'code': 'VIS', 
+        'layer': 'surface',
+        'detailed': True,
+        'unit_of_measure': 'm'
+    }
 }
