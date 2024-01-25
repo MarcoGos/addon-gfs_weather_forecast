@@ -27,25 +27,25 @@ MAPPING: dict[str, dict[str, Any]] = {
         'unit_of_measure': '°C'
     },
     # 'tmp': {
-    #     'code': 'TMP', 
+    #     'code': 'TMP',
     #     'layer': '2 m above ground',
     #     'correction': -273,
     #     'unit_of_measure': '°C'
     # },
     # 'tsfc': {
-    #     'code': 'TMP', 
+    #     'code': 'TMP',
     #     'layer': 'surface',
     #     'correction': -273,
     #     'detailed': True,
     #     'unit_of_measure': '°C'
     # },
-    # 'tmp500hpa': {
-    #     'code': 'TMP', 
-    #     'layer': '500 mb',
-    #     'correction': -273,
-    #     'detailed': True,
-    #     'unit_of_measure': '°C'
-    # },
+    'tmp500hpa': {
+        'code': 'TMP', 
+        'layer': '500 mb',
+        'correction': -273,
+        'detailed': True,
+        'unit_of_measure': '°C'
+    },
     'cldhigh': {
         'code': 'HCDC', 
         'layer': 'high cloud layer',
