@@ -11,8 +11,7 @@ MAPPING: dict[str, dict[str, Any]] = {
     },
     'gust': {
         'code': 'GUST', 
-        'layer': 'surface',
-        'detailed': True
+        'layer': 'surface'
     },
     'tmin': {
         'code': 'TMIN', 
@@ -26,24 +25,10 @@ MAPPING: dict[str, dict[str, Any]] = {
         'correction': -273,
         'unit_of_measure': '°C'
     },
-    # 'tmp': {
-    #     'code': 'TMP',
-    #     'layer': '2 m above ground',
-    #     'correction': -273,
-    #     'unit_of_measure': '°C'
-    # },
-    # 'tsfc': {
-    #     'code': 'TMP',
-    #     'layer': 'surface',
-    #     'correction': -273,
-    #     'detailed': True,
-    #     'unit_of_measure': '°C'
-    # },
     'tmp500hpa': {
         'code': 'TMP', 
         'layer': '500 mb',
         'correction': -273,
-        'detailed': True,
         'unit_of_measure': '°C'
     },
     'cldhigh': {
@@ -54,7 +39,6 @@ MAPPING: dict[str, dict[str, Any]] = {
     'cldmid': {
         'code': 'MCDC', 
         'layer': 'middle cloud layer',
-        'detailed': True,
         'unit_of_measure': '%'
     },
     'cldlow': {
@@ -72,32 +56,22 @@ MAPPING: dict[str, dict[str, Any]] = {
         'layer': 'surface',
         'unit_of_measure': 'mm'
     },
-    # 'humidity': {
-    #     'code': 'RH', 
-    #     'layer': '2 m above ground',
-    #     'detailed': True,
-    #     'unit_of_measure': '%'
-    # },
     'cape': {
         'code': 'CAPE', 
-        'layer': 'surface',
-        'detailed': True
+        'layer': 'surface'
     },
     'liftedindex': {
         'code': '4LFTX',
-        'layer': 'surface',
-        'detailed': True
+        'layer': 'surface'
     },
     'pres': {
         'code': 'PRES', 
         'layer': 'surface',
-        'detailed': True,
         'unit_of_measure': 'hPa'
     },
     'vis': {
         'code': 'VIS', 
         'layer': 'surface',
-        'detailed': True,
         'unit_of_measure': 'm'
     }
 }
