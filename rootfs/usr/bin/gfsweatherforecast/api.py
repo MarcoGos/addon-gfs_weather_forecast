@@ -1,26 +1,37 @@
-from bottle import run, get
-import os.path
-from const import store_directory
+""" "API endpoints for GFS weather forecast data retrieval."""
+
 import json
+import os.path
 from typing import Any
+from bottle import run, get  # type: ignore
+from const import latest_file, forecast_file, status_file
 
-@get('/api/forecast')
+
+@get("/api/forecast")
 def forecast():
-    return load_file(f'{store_directory}forecast.json')
+    """Endpoint to retrieve the weather forecast data."""
+    return load_file(forecast_file)
 
-@get('/api/status')
+
+@get("/api/status")
 def status():
-    return load_file(f'{store_directory}status.json')
+    """Endpoint to retrieve the current status of the GFS data loading process."""
+    return load_file(status_file)
 
-@get('/api/raw')
+
+@get("/api/latest")
 def raw():
-    return load_file(f'{store_directory}gfsdata.json')
-    
+    """Endpoint to retrieve the latest GFS data."""
+    return load_file(latest_file)
+
+
 def load_file(file_path: str) -> Any:
+    """Load JSON data from a file if it exists, otherwise return an empty dictionary."""
     if os.path.isfile(file_path):
         with open(file_path) as f:
             return json.load(f)
     else:
-            return {}
+        return {}
 
-run(host = '0.0.0.0', port = 8000, quiet=True)
+
+run(host="0.0.0.0", port=8000, quiet=True)

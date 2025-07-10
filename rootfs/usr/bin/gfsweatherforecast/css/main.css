@@ -1,0 +1,31 @@
+.table-sm{
+  font-size: 10px;
+}
+
+body {
+  min-height: 0rem !important;
+  padding-top: 0.0rem !important;
+}
+.table {
+  margin-bottom: 0rem !important;
+}
+@media (prefers-color-scheme: dark) {
+  .forecast-table {
+      color: #000 !important;
+  }
+  .forecast-table td:first-child {
+      color: #fff !important;
+  }
+  .forecast-table thead {
+      color: #fff !important;
+  }
+  .forecast-table td.winddirection {
+      background-color: #fff !important;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  .forecast-table td:first-child {
+      background-color: #EEEEEE
+  }
+}
