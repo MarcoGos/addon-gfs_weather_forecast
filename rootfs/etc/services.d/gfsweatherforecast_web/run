@@ -17,7 +17,7 @@
 #bashio::log.info "Starting nfws from run ..."
 
 ## Run your program
-bashio::log.info "Start listening on port 8080"
+bashio::log.info "Start listening on port 8001"
 cd /usr/bin/gfsweatherforecast
 #exec python3 /usr/bin/gfsweatherforecast/web.py
 exec python3 ./web.py
