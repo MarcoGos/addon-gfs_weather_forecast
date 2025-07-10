@@ -11,6 +11,7 @@ def str_rgb(r, g, b) -> str:
 
 def get_rgb_wind(x: float) -> str:
     """Convert wind speed in m/s to a color based on the Beaufort scale."""
+    x = x / 0.5144; # Naar knopen
     r = 255
     g = 255
     b = 255
