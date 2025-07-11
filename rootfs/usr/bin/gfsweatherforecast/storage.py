@@ -56,11 +56,16 @@ class Storage:
         )
         self._store_status()
 
+    def store_latitude_longitude(self, latitude: float, longitude: float):
+        """Store the latitude and longitude used for GFS data retrieval."""
+        self._used_latitude_longitude = f"{latitude}; {longitude}"
+        self._store_status()
+
     def _store_status(self):
         """Helper method to store the current status in a JSON file."""
         status_data: dict[str, Any] = {
             "status": self._state,
-            # "used_latitude_longitude": self._used_latitude_longitude,
+            "used_latitude_longitude": self._used_latitude_longitude,
             "max_offset": self._max_offset,
             "current": self._current if self._current else {},
             "loading": self._loading if self._loading else {},

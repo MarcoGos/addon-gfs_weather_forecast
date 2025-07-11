@@ -331,6 +331,7 @@ class GfsForecast:
         """Store the used latitude and longitude in the data dictionary."""
         self._data["info"]["used_latitude"] = latitude
         self._data["info"]["used_longitude"] = longitude
+        self._storage.store_latitude_longitude(latitude, longitude)
 
     def restore_data(self) -> None:
         """Restore data from a JSON file if it exists, otherwise initialize with default values."""

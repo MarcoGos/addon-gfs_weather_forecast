@@ -4,7 +4,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from datetime import datetime as dt, timedelta
 import os
-from math import atan2
+from math import atan2, hypot
 from const import loading_file, latest_file
 from hacoreapi import HACoreApi
 
@@ -106,203 +106,231 @@ class GFSDataServer(BaseHTTPRequestHandler):
         self.end_headers()
 
         self.wfile.write(
-            b"<!DOCTYPE html>"
-            + b'<html lang="nl-NL">'
-            + b"<head>"
-            + b'<link rel="stylesheet" href="/css/main.css">'
-            + b'<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>'
-            + b'<script language="javaScript">'
-            + b"if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {"
-            + b'$(\'head\').append(\'<link rel="stylesheet" href="/css/bootstrap.darkly.min.css" type="text/css" />\');'
-            + b"$('head').append('<style>.gj-picker-bootstrap { color: #000 }</style>');"
-            + b"} else {"
-            + b"$('head').append('<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\">');"
-            + b"}"
-            + b"</script>"
-            + b"</head>"
-            + b'<body class="text-center">'
-            + b'<table class="table table-sm forecast-table">'
-            + b"<thead>"
-            + self.get_gfs_header()
-            + self.get_gfs_hours()
-            + b"</thead>"
-            + self.get_gfs_windspeed_bft()
-            + self.get_gfs_windgust()
-            + self.get_gfs_wind_direction()
-            + self.get_gfs_temperature_2m()
-            + self.get_gfs_temperature_500hPa()
-            + self.get_gfs_cloud_high()
-            + self.get_gfs_cloud_mid()
-            + self.get_gfs_cloud_low()
-            + self.get_gfs_cloud_total()
-            + self.get_gfs_rain()
-            + self.get_gfs_cape()
-            + self.get_gfs_lifted_index()
-            + self.get_gfs_pressure()
-            + self.get_gfs_visibility()
-            + b"</table>"
-            + b"</body>"
-            + b"</html>"
+            bytes(
+                self.get_doctype()
+                + self.add_html(
+                    self.get_head()
+                  + self.add_body(
+                        self.add_table(
+                            self.add_thead(
+                                self.get_gfs_header()
+                              + self.get_gfs_hours()
+                            )
+                            + self.get_gfs_windspeed_bft()
+                            + self.get_gfs_windgust()
+                            + self.get_gfs_wind_direction()
+                            + self.get_gfs_temperature_2m()
+                            + self.get_gfs_temperature_500hPa()
+                            + self.get_gfs_cloud_high()
+                            + self.get_gfs_cloud_mid()
+                            + self.get_gfs_cloud_low()
+                            + self.get_gfs_cloud_total()
+                            + self.get_gfs_rain()
+                            + self.get_gfs_cape()
+                            + self.get_gfs_lifted_index()
+                            + self.get_gfs_pressure()
+                            + self.get_gfs_visibility()
+                        )
+                    )
+                ), encoding="utf-8")
         )
 
+    def get_doctype(self):
+        """Return the doctype for HTML5."""
+        return "<!DOCTYPE html>"
+    
+    def add_html(self, content):
+        """Wrap content in HTML tags."""
+        return f'<html lang="nl-NL">{content}</html>'
+    
+    def get_head(self):
+        """Return the head section of the HTML."""
+        head_parts = [
+            "<head>",
+            '<link rel="stylesheet" href="/css/main.css">',
+            '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
+            '<script>',
+            "if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {",
+            "$('head').append('<link rel=\"stylesheet\" href=\"/css/bootstrap.darkly.min.css\" type=\"text/css\" />');",
+            "$('head').append('<style>.gj-picker-bootstrap { color: #000 }</style>');",
+            "} else {",
+            "$('head').append('<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css\">');",
+            "}",
+            "</script>",
+            "</head>"
+        ]
+        return ''.join(head_parts)
+    
+    def add_body(self, content):
+        """Add content to the body of the HTML."""
+        return f'<body class="text-center">{content}</body>'
+    
+    def add_table(self, content):
+        """Add content to the table of the HTML."""
+        return f'<table class="table table-sm forecast-table">{content}</table>'
+    
+    def add_thead(self, content):
+        """Add content to the table header of the HTML."""
+        return f'<thead>{content}</thead>'
+
     def get_gfs_header(self):
-        header = (
-            '<tr><td rowspan="2"><b>GFS</b><br>'
-            + self.gfsdate.strftime("%d-%m-%Y")
-            + "<br>"
-            + f"{self.info['pass']:02d}"
-            + " UTC</td>"
-        )
+        header_parts = [
+            f'<tr><td rowspan="2"><b>GFS</b><br>{self.gfsdate.strftime("%d-%m-%Y")}<br>{self.info["pass"]:02d} UTC</td>'
+        ]
+        utcoffset = zoneinfo.utcoffset(self.gfsdate)
+        seconds = utcoffset.seconds if utcoffset is not None else 0
+
         for offset in self.raw.keys():
-            utcoffset = zoneinfo.utcoffset(self.gfsdate)
-            seconds = utcoffset.seconds if utcoffset is not None else 0
             gfstime = self.gfsdate + timedelta(
                 hours=int(offset) + self.info["pass"],
                 seconds=seconds,
             )
-            if gfstime.day % 2 != 0:
-                color = "#BBBBBB"
-            else:
-                color = "#EEEEEE"
+            color = "#BBBBBB" if gfstime.day % 2 != 0 else "#EEEEEE"
             dayinfo = f"{gfstime.strftime('%a')}<br>{gfstime.strftime('%d')}<br>{gfstime.strftime('%b')}"
-            header += f'<td style="background-color:{color}">{dayinfo}</td>'
-        return bytes(header, "utf-8")
+            header_parts.append(f'<td style="background-color:{color}">{dayinfo}</td>')
+        return ''.join(header_parts)
 
     def get_gfs_hours(self):
-        header = "<tr>"
+        row_parts = ["<tr>"]
+        utcoffset = zoneinfo.utcoffset(self.gfsdate)
+        seconds = utcoffset.seconds if utcoffset is not None else 0
+
         for offset in self.raw.keys():
-            utcoffset = zoneinfo.utcoffset(self.gfsdate)
-            seconds = utcoffset.seconds if utcoffset is not None else 0
             gfstime = self.gfsdate + timedelta(
                 hours=int(offset) + self.info["pass"],
                 seconds=seconds,
             )
             gfstime = gfstime.astimezone(tz=zoneinfo)
-            if gfstime.day % 2 != 0:
-                color = "#BBBBBB"
-            else:
-                color = "#EEEEEE"
+            color = "#BBBBBB" if gfstime.day % 2 != 0 else "#EEEEEE"
             hourinfo = f"{gfstime.strftime('%H')}"
-            header += f'<td style="background-color:{color}">{hourinfo}h</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{hourinfo}h</td>')
+        return ''.join(row_parts)
 
     def get_gfs_windspeed_bft(self):
-        header = "<tr><td>Wind (Bft)</td>"
+        row_parts = ["<tr><td>Wind (Bft)</td>"]
         for _, details in self.raw.items():
-            windspeed_ms = pow(pow(details["uwind"], 2) + pow(details["vwind"], 2), 0.5)
+            windspeed_ms = hypot(details["uwind"], details["vwind"])
             windspeed = convert_ms_to_bft(windspeed_ms)
             color = get_rgb_wind(windspeed_ms)
-            header += f'<td style="background-color:{color}">{windspeed}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{windspeed}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_windgust(self):
-        header = "<tr><td>Wind Gusts (km/h)</td>"
+        row_parts = ["<tr><td>Wind Gusts (km/h)</td>"]
         for _, details in self.raw.items():
             gust = details["gust"]
             color = get_rgb_wind(gust - 5)
-            header += (
+            row_parts.append(
                 f'<td style="background-color:{color}">{round(ms_to_kmh(gust))}</td>'
             )
-        return bytes(header, "utf-8")
+        return ''.join(row_parts)
 
     def get_gfs_wind_direction(self):
-        header = "<tr><td>Wind Direction</td>"
+        row_parts = ["<tr><td>Wind Direction</td>"]
         for _, details in self.raw.items():
             windangle = (
                 round(90 - rad2deg(atan2(details["vwind"], details["uwind"])) + 180)
                 % 360
             )
             windindex = round(windangle / 22.5) % 16
-            header += f'<td class="winddirection"><img src="/images/arrows/s{windindex}.gif" border="0"></td>'
-        return bytes(header, "utf-8")
+            row_parts.append(
+                f'<td class="winddirection"><img src="/images/arrows/s{windindex}.gif" border="0"></td>'
+            )
+        return ''.join(row_parts)
 
     def get_gfs_temperature_2m(self):
-        header = "<tr><td>Temperature (2m)</td>"
+        row_parts = ["<tr><td>Temperature (2m)</td>"]
         for _, details in self.raw.items():
             tmax = round(details["tmax"])
             color = get_rgb_temp(tmax)
-            header += f'<td style="background-color:{color}">{tmax}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{tmax}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_temperature_500hPa(self):
-        header = "<tr><td><nobr>Temperature (500hPa)</nobr></td>"
+        row_parts = ["<tr><td><nobr>Temperature (500hPa)</nobr></td>"]
         for _, details in self.raw.items():
             tmp500hpa = round(details["tmp500hpa"])
             color = get_rgb_temp(tmp500hpa)
-            header += f'<td style="background-color:{color}">{tmp500hpa}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{tmp500hpa}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_cloud_high(self):
-        header = "<tr><td>Clouds (high)</td>"
+        row_parts = ["<tr><td>Clouds (high)</td>"]
         for _, details in self.raw.items():
             cldhigh = round(details["cldhigh"])
             color = get_rgb_cloud(cldhigh)
-            header += f'<td style="background-color:{color}">{cldhigh if cldhigh != 0 else ""}</td>'
-        return bytes(header, "utf-8")
+            value = cldhigh if cldhigh != 0 else ""
+            row_parts.append(f'<td style="background-color:{color}">{value}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_cloud_mid(self):
-        header = "<tr><td>Clouds (mid)</td>"
+        row_parts = ["<tr><td>Clouds (mid)</td>"]
         for _, details in self.raw.items():
             cldmid = round(details["cldmid"])
             color = get_rgb_cloud(cldmid)
-            header += f'<td style="background-color:{color}">{cldmid if cldmid != 0 else ""}</td>'
-        return bytes(header, "utf-8")
+            value = cldmid if cldmid != 0 else ""
+            row_parts.append(f'<td style="background-color:{color}">{value}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_cloud_low(self):
-        header = "<tr><td>Clouds (low)</td>"
+        row_parts = ["<tr><td>Clouds (low)</td>"]
         for _, details in self.raw.items():
             cldlow = round(details["cldlow"])
             color = get_rgb_cloud(cldlow)
-            header += f'<td style="background-color:{color}">{cldlow if cldlow != 0 else ""}</td>'
-        return bytes(header, "utf-8")
+            value = cldlow if cldlow != 0 else ""
+            row_parts.append(f'<td style="background-color:{color}">{value}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_cloud_total(self):
-        header = "<tr><td>Clouds (total)</td>"
+        row_parts = ["<tr><td>Clouds (total)</td>"]
         for _, details in self.raw.items():
             cldtotal = round(details["cldtotal"])
             color = get_rgb_cloud(cldtotal)
-            header += f'<td style="background-color:{color}">{cldtotal if cldtotal != 0 else ""}</td>'
-        return bytes(header, "utf-8")
+            value = cldtotal if cldtotal != 0 else ""
+            row_parts.append(f'<td style="background-color:{color}">{value}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_rain(self):
-        header = "<tr><td>Rain (mm/3h)</td>"
+        row_parts = ["<tr><td>Rain (mm/3h)</td>"]
         for _, details in self.raw.items():
             rain = round(details["rain"])
             color = get_rgb_precip(rain)
-            header += f'<td style="background-color:{color}">{rain}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{rain}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_cape(self):
-        header = "<tr><td>CAPE</td>"
+        row_parts = ["<tr><td>CAPE</td>"]
         for _, details in self.raw.items():
             cape = round(details["cape"])
             color = get_rgb_cape(cape)
-            header += f'<td style="background-color:{color}">{cape}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{cape}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_lifted_index(self):
-        header = "<tr><td>Lifted Index</td>"
+        row_parts = ["<tr><td>Lifted Index</td>"]
         for _, details in self.raw.items():
             liftedindex = round(details["liftedindex"])
             color = get_rgb_lifted_index(liftedindex)
-            header += f'<td style="background-color:{color}">{liftedindex}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{liftedindex}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_pressure(self):
-        header = "<tr><td>Pressure (+1000 hPa)</td>"
+        row_parts = ["<tr><td>Pressure (+1000 hPa)</td>"]
         for _, details in self.raw.items():
             pres = round(details["pres"] / 100.0) - 1000
             color = "#FFFFFF"
-            header += f'<td style="background-color:{color}">{pres}</td>'
-        return bytes(header, "utf-8")
+            row_parts.append(f'<td style="background-color:{color}">{pres}</td>')
+        return ''.join(row_parts)
 
     def get_gfs_visibility(self):
-        header = "<tr><td>Visibility (x1000m)</td>"
+        row_parts = ["<tr><td>Visibility (x1000m)</td>"]
         for _, details in self.raw.items():
             vis = round(details["vis"] / 1000.0)
             color = get_rgb_fog(vis)
-            header += f'<td style="background-color:#FFFFFF"><font size="1" color="{color}">{vis}</font></td>'
-        return bytes(header, "utf-8")
+            row_parts.append(
+                f'<td style="background-color:#FFFFFF"><font size="1" color="{color}">{vis}</font></td>'
+            )
+        return ''.join(row_parts)
 
 
 webServer = HTTPServer((HOSTNAME, SERVERPORT), GFSDataServer)
