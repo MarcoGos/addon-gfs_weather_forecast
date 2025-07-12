@@ -39,12 +39,6 @@ class GFSDataServer(BaseHTTPRequestHandler):
     raw = {}
     info = {}
 
-    def end_headers(self):
-        self.send_header("Cache-Control", "no-cache, no-store, must-revalidate")
-        self.send_header("Pragma", "no-cache")
-        self.send_header("Expires", "0")
-        super().end_headers()
-
     def log_message(self, format, *args):
         """Override to disable logging."""
         pass
@@ -60,7 +54,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
             self.get_gfs_data_page(loading_file)
             return
 
-        elif self.path.__contains__("/images/arrows/"):
+        elif "/images/arrows/" in self.path:
             arrow = self.path.split("/")[-1]
             filename = f"images/arrows/{arrow}"
             if os.path.exists(filename):
@@ -74,8 +68,9 @@ class GFSDataServer(BaseHTTPRequestHandler):
                     self.wfile.write(f.read())
                     return
 
-        elif self.path.__contains__("/css/"):
-            cssfile = self.path.split("/")[-1]
+        elif "/css/" in self.path:
+            css_path = self.path.split("?")[0]  # Remove query params
+            cssfile = os.path.basename(css_path)
             filename = f"css/{cssfile}"
             if os.path.exists(filename):
                 self.send_response(200)
@@ -84,9 +79,9 @@ class GFSDataServer(BaseHTTPRequestHandler):
             self.send_header("Content-type", "text/css")
             self.end_headers()
             if os.path.exists(filename):
-                with open(f"css/{cssfile}", "rb") as f:
+                with open(filename, "rb") as f:
                     self.wfile.write(f.read())
-                    return
+                return
         else:
             self.send_response(404)
             self.send_header("Content-type", "text/html")
@@ -153,7 +148,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         """Return the head section of the HTML."""
         head_parts = [
             "<head>",
-            '<link rel="stylesheet" href="/css/main.css">',
+            '<link rel="stylesheet" href="/css/main.css?version=1.0" type="text/css">',
             '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
             '<script>',
             "if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {",
