@@ -22,10 +22,22 @@ body {
   .forecast-table td.winddirection {
       background-color: #fff !important;
   }
+  .forecast-table td.odd {
+      background-color: #BBBBBB;
+  }
+  .forecast-table td.even {
+      background-color: #222;
+  }
 }
 
 @media (prefers-color-scheme: light) {
   .forecast-table td:first-child {
       background-color: #EEEEEE
+  }
+  .forecast-table td.odd {
+      background-color: #BBBBBB;
+  }
+  .forecast-table td.even {
+      background-color: #EEEEEE;
   }
 }

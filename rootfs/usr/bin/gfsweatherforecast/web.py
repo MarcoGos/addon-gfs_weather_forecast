@@ -175,8 +175,12 @@ class GFSDataServer(BaseHTTPRequestHandler):
 
     def get_gfs_header(self):
         header_parts = [
-            f'<tr><td rowspan="2"><b>GFS</b><br>{self.gfsdate.strftime("%d-%m-%Y")}<br>{self.info["pass"]:02d} UTC</td>'
+            f'<tr><td rowspan="2"><b>GFS</b><br>{self.gfsdate.strftime("%d-%m-%Y")}<br>{self.info["pass"]:02d} UTC'
         ]
+        if not self.info.get("done", False):
+            header_parts.append('<br>Loading')
+        header_parts.append("</td>")
+
         utcoffset = zoneinfo.utcoffset(self.gfsdate)
         seconds = utcoffset.seconds if utcoffset is not None else 0
 
@@ -185,9 +189,9 @@ class GFSDataServer(BaseHTTPRequestHandler):
                 hours=int(offset) + self.info["pass"],
                 seconds=seconds,
             )
-            color = "#BBBBBB" if gfstime.day % 2 != 0 else "#EEEEEE"
+            style_class = "odd" if gfstime.day % 2 != 0 else "even" 
             dayinfo = f"{gfstime.strftime('%a')}<br>{gfstime.strftime('%d')}<br>{gfstime.strftime('%b')}"
-            header_parts.append(f'<td style="background-color:{color}">{dayinfo}</td>')
+            header_parts.append(f'<td class="{style_class}">{dayinfo}</td>')
         return ''.join(header_parts)
 
     def get_gfs_hours(self):
@@ -201,9 +205,9 @@ class GFSDataServer(BaseHTTPRequestHandler):
                 seconds=seconds,
             )
             gfstime = gfstime.astimezone(tz=zoneinfo)
-            color = "#BBBBBB" if gfstime.day % 2 != 0 else "#EEEEEE"
+            style_class = "odd" if gfstime.day % 2 != 0 else "even" 
             hourinfo = f"{gfstime.strftime('%H')}"
-            row_parts.append(f'<td style="background-color:{color}">{hourinfo}h</td>')
+            row_parts.append(f'<td class="{style_class}">{hourinfo}h</td>')
         return ''.join(row_parts)
 
     def get_gfs_windspeed_bft(self):
