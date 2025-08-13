@@ -45,9 +45,6 @@ class GFSDataServer(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle GET requests."""
-        if self.path.startswith("/f78e9da0-gfsweatherforecast"):
-            self.path = self.path.replace("/f78e9da0-gfsweatherforecast", "")
-
         if self.path == "/latest":
             self.get_gfs_data_page(latest_file)
             return
