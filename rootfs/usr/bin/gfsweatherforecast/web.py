@@ -205,7 +205,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
                 seconds=seconds,
             )
             gfstime = gfstime.astimezone(tz=zoneinfo)
-            style_class = "odd" if gfstime.day % 2 != 0 else "even" 
+            style_class = "odd" if gfstime.timetuple().tm_yday % 2 != 0 else "even" 
             hourinfo = f"{gfstime.strftime('%H')}"
             row_parts.append(f'<td class="{style_class}">{hourinfo}h</td>')
         return ''.join(row_parts)
