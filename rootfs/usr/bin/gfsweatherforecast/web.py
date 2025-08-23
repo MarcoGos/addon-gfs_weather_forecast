@@ -189,7 +189,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
                 hours=int(offset) + self.info["pass"],
                 seconds=seconds,
             )
-            style_class = "odd" if gfstime.day % 2 != 0 else "even" 
+            style_class = "odd" if gfstime.timetuple().tm_yday % 2 != 0 else "even" 
             dayinfo = f"{gfstime.strftime('%a')}<br>{gfstime.strftime('%d')}<br>{gfstime.strftime('%b')}"
             header_parts.append(f'<td class="{style_class}">{dayinfo}</td>')
         return ''.join(header_parts)
