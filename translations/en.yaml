@@ -5,3 +5,6 @@ configuration:
   max_offset:
     name: Maximum offset
     description: GFS is calculated until 384 hours in advance. The offset is between 1 and 384 hours.
+  language:
+    name: Language
+    description: Language for the web interface.

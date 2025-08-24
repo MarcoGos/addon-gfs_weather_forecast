@@ -16,8 +16,10 @@
 #bashio::log.info "${message:="Hello World..."}"
 #bashio::log.info "Starting nfws from run ..."
 
+LANGUAGE=$(bashio::config "language")
+
 ## Run your program
 bashio::log.info "Start listening on port 8001"
 cd /usr/bin/gfsweatherforecast
 #exec python3 /usr/bin/gfsweatherforecast/web.py
-exec python3 ./web.py
+exec python3 ./web.py -l $LANGUAGE
