@@ -330,7 +330,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         for _, details in self.raw.items():
             cape = round(details["cape"])
             color = get_rgb_cape(cape)
-            row_parts.append(f'<td style="background-color:{color}">{cape}</td>')
+            row_parts.append(f'<td style="background-color:{color}">{cape} J/kg</td>')
         return "".join(row_parts)
 
     def get_gfs_lifted_index(self):
