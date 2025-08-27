@@ -8,7 +8,7 @@ RUN \
 
 RUN python3 -m venv /venv
 ENV PATH="/venv/bin:$PATH"
-RUN pip install requests colorlog bottle
+RUN pip install requests colorlog bottle babel
 
 WORKDIR /
 

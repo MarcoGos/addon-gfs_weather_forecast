@@ -4,12 +4,14 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 import gettext
 import getopt
+
 from datetime import datetime as dt, timedelta
 import os
 import sys
 from math import atan2, hypot
 from const import loading_file, latest_file
 from hacoreapi import HACoreApi
+from babel.dates import format_date
 
 from utils import (
     rad2deg,
@@ -195,7 +197,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
 
     def get_gfs_header(self):
         header_parts = [
-            f'<tr><td rowspan="2"><b>GFS</b><br>{self.gfsdate.strftime("%d-%m-%Y")}<br>{self.info["pass"]:02d} UTC'
+            f'<tr><td rowspan="2"><b>GFS</b><br>{format_date(self.gfsdate, locale=language)}<br>{self.info["pass"]:02d} UTC'
         ]
         if not self.info.get("done", False):
             header_parts.append("<br>Loading")
@@ -210,7 +212,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
                 seconds=seconds,
             )
             style_class = "odd" if gfstime.timetuple().tm_yday % 2 != 0 else "even"
-            dayinfo = f"{gfstime.strftime('%a')}<br>{gfstime.strftime('%d')}<br>{gfstime.strftime('%b')}"
+            dayinfo = f"{format_date(gfstime, 'EEE', locale=language)}<br>{gfstime.strftime('%d')}<br>{format_date(gfstime, 'LLL', locale=language)}"
             header_parts.append(f'<td class="{style_class}">{dayinfo}</td>')
         return "".join(header_parts)
 
