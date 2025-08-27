@@ -163,12 +163,13 @@ class GFSDataServer(BaseHTTPRequestHandler):
 
     def add_html(self, content):
         """Wrap content in HTML tags."""
-        return f'<html lang="nl-NL">{content}</html>'
+        return f"<html>{content}</html>"
 
     def get_head(self):
         """Return the head section of the HTML."""
         head_parts = [
             "<head>",
+            '<meta charset="UTF-8">',
             '<link rel="stylesheet" href="/css/main.css?version=1.0" type="text/css">',
             '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
             "<script>",

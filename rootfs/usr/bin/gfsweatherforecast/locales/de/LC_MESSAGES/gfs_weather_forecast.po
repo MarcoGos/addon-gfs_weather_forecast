@@ -14,61 +14,61 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: web.py:223
 msgid "Wind (Bft)"
-msgstr ""
+msgstr "Wind (Bft)"
 
 #: web.py:232
 msgid "Wind Gusts (km/h)"
-msgstr ""
+msgstr "Windböen (km/h)"
 
 #: web.py:242
 msgid "Wind Direction"
-msgstr ""
+msgstr "Windrichtung"
 
 #: web.py:255
 msgid "Temperature (2m)"
-msgstr ""
+msgstr "Temperatur (2m)"
 
 #: web.py:263
 msgid "Temperature (500hPa)"
-msgstr ""
+msgstr "Temperatur (500hPa)"
 
 #: web.py:271
 msgid "Clouds (high)"
-msgstr ""
+msgstr "Wolken (hoch)"
 
 #: web.py:280
 msgid "Clouds (mid)"
-msgstr ""
+msgstr "Wolken (mittel)"
 
 #: web.py:289
 msgid "Clouds (low)"
-msgstr ""
+msgstr "Wolken (tief)"
 
 #: web.py:298
 msgid "Clouds (total)"
-msgstr ""
+msgstr "Wolken (gesamt)"
 
 #: web.py:307
 msgid "Rain (mm/3h)"
-msgstr ""
+msgstr "Regen (mm/3h)"
 
 #: web.py:315
 msgid "CAPE"
-msgstr ""
+msgstr "CAPE"
 
 #: web.py:323
 msgid "Lifted Index"
-msgstr ""
+msgstr "Lifted Index"
 
 #: web.py:331
 msgid "Pressure (+1000 hPa)"
-msgstr ""
+msgstr "Luftdruck (+1000 hPa)"
 
 #: web.py:339
 msgid "Visibility (x1000m)"
-msgstr ""
+msgstr "Sichtweite (x1000m)"
