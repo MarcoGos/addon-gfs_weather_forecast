@@ -9,6 +9,9 @@ body {
 .table {
   margin-bottom: 0rem !important;
 }
+th,td {
+  white-space: nowrap;
+}
 @media (prefers-color-scheme: dark) {
   .forecast-table {
       color: #000 !important;

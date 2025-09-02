@@ -18,44 +18,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: web.py:223
-msgid "Wind (Bft)"
-msgstr "Wind (Bft)"
+msgid "Wind"
+msgstr "Wind"
 
 #: web.py:232
-msgid "Wind Gusts (km/h)"
-msgstr "Wind Gusts (km/h)"
+msgid "Wind Gusts"
+msgstr "Wind Gusts"
 
 #: web.py:242
 msgid "Wind Direction"
 msgstr "Wind Direction"
 
 #: web.py:255
-msgid "Temperature (2m)"
-msgstr "Temperature (2m)"
+msgid "Temperature 2m"
+msgstr "Temperature 2m"
 
 #: web.py:263
-msgid "Temperature (500hPa)"
-msgstr "Temperature (500hPa)"
+msgid "Temperature 500hPa"
+msgstr "Temperature 500hPa"
 
 #: web.py:271
-msgid "Clouds (high)"
-msgstr "Clouds (high)"
+msgid "Clouds High"
+msgstr "Clouds High"
 
 #: web.py:280
-msgid "Clouds (mid)"
-msgstr "Clouds (mid)"
+msgid "Clouds Mid"
+msgstr "Clouds Mid"
 
 #: web.py:289
-msgid "Clouds (low)"
-msgstr "Clouds (low)"
+msgid "Clouds Low"
+msgstr "Clouds Low"
 
 #: web.py:298
-msgid "Clouds (total)"
-msgstr "Clouds (total)"
+msgid "Clouds Total"
+msgstr "Clouds Total"
 
 #: web.py:307
-msgid "Rain (mm/3h)"
-msgstr "Rain (mm/3h)"
+msgid "Rain"
+msgstr "Rain"
 
 #: web.py:315
 msgid "CAPE"
@@ -66,9 +66,9 @@ msgid "Lifted Index"
 msgstr "Lifted Index"
 
 #: web.py:331
-msgid "Pressure (+1000 hPa)"
-msgstr "Pressure (+1000 hPa)"
+msgid "Pressure"
+msgstr "Pressure"
 
 #: web.py:339
-msgid "Visibility (x1000m)"
-msgstr "Visibility (x1000m)"
+msgid "Visibility"
+msgstr "Visibility"

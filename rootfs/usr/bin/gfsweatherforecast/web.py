@@ -170,7 +170,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         head_parts = [
             "<head>",
             '<meta charset="UTF-8">',
-            '<link rel="stylesheet" href="/css/main.css?version=1.0" type="text/css">',
+            '<link rel="stylesheet" href="/css/main.css?version=1.1" type="text/css">',
             '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>',
             "<script>",
             "if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {",
@@ -234,7 +234,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_windspeed_bft(self):
-        row_parts = ["<tr><td>" + _t("Wind (Bft)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Wind") + " (Bft)</td>"]
         for _, details in self.raw.items():
             windspeed_ms = hypot(details["uwind"], details["vwind"])
             windspeed = convert_ms_to_bft(windspeed_ms)
@@ -243,7 +243,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_windgust(self):
-        row_parts = ["<tr><td>" + _t("Wind Gusts (km/h)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Wind Gusts") + " (km/h)</td>"]
         for _, details in self.raw.items():
             gust = details["gust"]
             color = get_rgb_wind(gust - 5)
@@ -266,7 +266,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_temperature_2m(self):
-        row_parts = ["<tr><td>" + _t("Temperature (2m)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Temperature 2m") + " (°C)</td>"]
         for _, details in self.raw.items():
             tmax = round(details["tmax"])
             color = get_rgb_temp(tmax)
@@ -274,7 +274,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_temperature_500hPa(self):
-        row_parts = ["<tr><td><nobr>" + _t("Temperature (500hPa)") + "</nobr></td>"]
+        row_parts = ["<tr><td>" + _t("Temperature 500hPa") + " (°C)</td>"]
         for _, details in self.raw.items():
             tmp500hpa = round(details["tmp500hpa"])
             color = get_rgb_temp(tmp500hpa)
@@ -282,7 +282,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_cloud_high(self):
-        row_parts = ["<tr><td>" + _t("Clouds (high)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Clouds High") + " (%)</td>"]
         for _, details in self.raw.items():
             cldhigh = round(details["cldhigh"])
             color = get_rgb_cloud(cldhigh)
@@ -291,7 +291,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_cloud_mid(self):
-        row_parts = ["<tr><td>" + _t("Clouds (mid)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Clouds Mid") + " (%)</td>"]
         for _, details in self.raw.items():
             cldmid = round(details["cldmid"])
             color = get_rgb_cloud(cldmid)
@@ -300,7 +300,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_cloud_low(self):
-        row_parts = ["<tr><td>" + _t("Clouds (low)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Clouds Low") + " (%)</td>"]
         for _, details in self.raw.items():
             cldlow = round(details["cldlow"])
             color = get_rgb_cloud(cldlow)
@@ -309,7 +309,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_cloud_total(self):
-        row_parts = ["<tr><td>" + _t("Clouds (total)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Clouds Total") + " (%)</td>"]
         for _, details in self.raw.items():
             cldtotal = round(details["cldtotal"])
             color = get_rgb_cloud(cldtotal)
@@ -318,7 +318,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_rain(self):
-        row_parts = ["<tr><td>" + _t("Rain (mm/3h)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Rain") + " (mm/3h)</td>"]
         for _, details in self.raw.items():
             rain = round(details["rain"])
             color = get_rgb_precip(rain)
@@ -326,11 +326,11 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_cape(self):
-        row_parts = ["<tr><td>" + _t("CAPE") + "</td>"]
+        row_parts = ["<tr><td>" + _t("CAPE") + " (J/kg)</td>"]
         for _, details in self.raw.items():
             cape = round(details["cape"])
             color = get_rgb_cape(cape)
-            row_parts.append(f'<td style="background-color:{color}">{cape} J/kg</td>')
+            row_parts.append(f'<td style="background-color:{color}">{cape}</td>')
         return "".join(row_parts)
 
     def get_gfs_lifted_index(self):
@@ -342,7 +342,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_pressure(self):
-        row_parts = ["<tr><td>" + _t("Pressure (+1000 hPa)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Pressure") + " +1000 (hPa)</td>"]
         for _, details in self.raw.items():
             pres = round(details["pres"] / 100.0) - 1000
             color = "#FFFFFF"
@@ -350,7 +350,7 @@ class GFSDataServer(BaseHTTPRequestHandler):
         return "".join(row_parts)
 
     def get_gfs_visibility(self):
-        row_parts = ["<tr><td>" + _t("Visibility (x1000m)") + "</td>"]
+        row_parts = ["<tr><td>" + _t("Visibility") + " x1000 (m)</td>"]
         for _, details in self.raw.items():
             vis = round(details["vis"] / 1000.0)
             color = get_rgb_fog(vis)
