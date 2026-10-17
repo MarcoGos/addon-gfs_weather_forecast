@@ -1,6 +1,6 @@
 """# Constants for GFS Weather Forecast Addon"""
 
-store_directory: str = "/addon_config/"
+store_directory: str = "/app_config/"
 temp_directory: str = "/data/"
 
 loading_file: str = f"{store_directory}loading.json"
