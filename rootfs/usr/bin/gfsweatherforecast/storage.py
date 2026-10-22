@@ -1,10 +1,11 @@
 """Storage class for managing GFS weather forecast data and status."""
 
-from typing import Any
-from datetime import date
 import json
+from datetime import date
+from typing import Any
+
+from const import forecast_file, latest_file, status_file
 from mylogger import logger
-from const import forecast_file, status_file
 
 
 class Storage:
@@ -12,13 +13,27 @@ class Storage:
 
     _state: str
     _used_latitude_longitude: str = ""
-    _current: dict[str, Any] = {}
-    _loading: dict[str, Any] = {}
+    _current: dict[str, Any]
+    _loading: dict[str, Any]
     _gfs_pass: int
     _max_offset: int
 
     def __init__(self, max_offset: int) -> None:
         self._max_offset = max_offset
+        self._state = "Waiting"
+        self._current = {}
+        self._loading = {}
+        self._used_latitude_longitude = ""
+        try:
+            with open(latest_file, encoding="utf-8") as file:
+                info = json.load(file)["info"]
+            self._current = {"date": info["date"], "pass": info["pass"]}
+            if "used_latitude" in info and "used_longitude" in info:
+                self._used_latitude_longitude = (
+                    f"{info['used_latitude']}; {info['used_longitude']}"
+                )
+        except (OSError, ValueError, KeyError, TypeError):
+            logger.debug("No completed GFS forecast metadata available to restore")
 
     def store_forecast(self, day_forecast: dict[str, Any]):
         """Store the daily forecast data in a JSON file."""
