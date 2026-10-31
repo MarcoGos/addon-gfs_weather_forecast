@@ -34,7 +34,7 @@ Start the add-on, then install the [GFS Weather Forecast integration](https://gi
 
 1. Add `MarcoGos/gfs_weather_forecast` as a custom repository in HACS and select **Integration**.
 2. Restart Home Assistant, then add **GFS Weather Forecast** from **Settings** → **Devices & services** → **Add integration**.
-3. When prompted, enter the add-on API port. The default is `8000`.
+3. When prompted, enter the add-on API port. The default is `8765`.
 
 
 [aarch64-shield]: https://img.shields.io/badge/aarch64-yes-green.svg
