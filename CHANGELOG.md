@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.5
+
+- Changed default port to 8765
+
 ## 2.1.4
 
 - Added additional check if internet connection of dns fails
