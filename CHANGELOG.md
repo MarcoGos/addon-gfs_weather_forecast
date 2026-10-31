@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.4
+
+- Added additional check if internet connection of dns fails
+
 ## 2.1.3
 
 - Save current date and pass when app state is loading or waiting
