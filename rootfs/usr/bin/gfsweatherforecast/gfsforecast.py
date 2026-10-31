@@ -41,6 +41,7 @@ class GfsForecast:
         self._max_offset = max_offset
         self._zoneinfo = zoneinfo
         self._storage: Storage = storage
+        self._data = {}
 
     def __get_url(
         self, gfs_date: date, gfs_pass: int, offset: int, inventory: bool = False
@@ -304,6 +305,10 @@ class GfsForecast:
                     self.logger.warning(
                         "Got a timeout on getting the lastest pass info"
                     )
+                    self._storage.store_status_waiting()
+                    break
+                except requests.exceptions.RequestException as error:
+                    self.logger.warning("Could not get the latest pass info: %s", error)
                     self._storage.store_status_waiting()
                     break
             counter -= 1
